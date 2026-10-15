@@ -1,0 +1,155 @@
+[
+  {
+    "id": "beg-step1-cross",
+    "set": "beginner",
+    "name": "Passo 1: Cruz Branca",
+    "group": "Primeira Camada",
+    "recognition": "Alinhe cada aresta branca com a cor do centro lateral e gire a face para baixo até o centro branco.",
+    "notes": "Feito de forma intuitiva. Dica: forme primeiro uma 'margarida' com as arestas brancas ao redor do centro amarelo, alinhe os centros laterais e gire F2.",
+    "algs": [
+      {
+        "notation": "F2",
+        "label": "Descida de Aresta Alinhada",
+        "moveCountHTM": 1,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" },
+          { "name": "CuboVelocidade", "url": "https://cubovelocidade.com.br" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beg-step2-corners",
+    "set": "beginner",
+    "name": "Passo 2: Cantos da Primeira Camada",
+    "group": "Primeira Camada",
+    "recognition": "Posicione o canto branco no andar de cima logo acima do local onde ele deve entrar.",
+    "notes": "Aplique o 'Sexy Move' (R U R' U') de 1 a 5 vezes até o canto ficar perfeitamente orientado.",
+    "algs": [
+      {
+        "notation": "R U R' U'",
+        "label": "Sexy Move (Repetir até orientar)",
+        "moveCountHTM": 4,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beg-step3-edge-right",
+    "set": "beginner",
+    "name": "Passo 3: Segunda Camada (Aresta para a Direita)",
+    "group": "Segunda Camada (Meios)",
+    "recognition": "Aresta no topo sem cor amarela. Cor frontal coincide com o centro; cor superior deve ir para a direita.",
+    "notes": "Move a aresta para longe, sobe o slot, devolve e emparelha.",
+    "algs": [
+      {
+        "notation": "U R U' R' U' F' U F",
+        "label": "Inserção à Direita",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beg-step3-edge-left",
+    "set": "beginner",
+    "name": "Passo 3: Segunda Camada (Aresta para a Esquerda)",
+    "group": "Segunda Camada (Meios)",
+    "recognition": "Aresta no topo sem cor amarela. Cor superior deve ir para a esquerda.",
+    "notes": "Espelho exato da inserção à direita.",
+    "algs": [
+      {
+        "notation": "U' L' U L U F U' F'",
+        "label": "Inserção à Esquerda",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beg-step4-yellow-cross",
+    "set": "beginner",
+    "name": "Passo 4: Cruz Amarela no Topo",
+    "group": "Última Camada (Orientação)",
+    "recognition": "Ponto, Linha ou L no topo com peças amarelas.",
+    "notes": "Abre a face com F, aplica Sexy Move e fecha com F'.",
+    "algs": [
+      {
+        "notation": "F R U R' U' F'",
+        "label": "F (Sexy Move) F'",
+        "moveCountHTM": 6,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beg-step5-yellow-face",
+    "set": "beginner",
+    "name": "Passo 5: Face Amarela Completa (Sune)",
+    "group": "Última Camada (Orientação)",
+    "recognition": "Cruz amarela pronta. Repita o Sune para orientar todos os cantos amarelos para cima.",
+    "notes": "Deixa a face amarela 100% orientada.",
+    "algs": [
+      {
+        "notation": "R U R' U R U2 R'",
+        "label": "Sune Tradicional",
+        "moveCountHTM": 7,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beg-step6-permute-corners",
+    "set": "beginner",
+    "name": "Passo 6: Permutar Cantos da Última Camada",
+    "group": "Última Camada (Permutação)",
+    "recognition": "Procure faróis (dois cantos com a mesma cor). Coloque-os atrás e aplique o algoritmo.",
+    "notes": "Se não houver faróis, faça o algoritmo uma vez para criá-los.",
+    "algs": [
+      {
+        "notation": "R' F R' B2 R F' R' B2 R2",
+        "label": "Algoritmo Clássico de Faróis (Aa/A-Perm)",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beg-step7-permute-edges",
+    "set": "beginner",
+    "name": "Passo 7: Permutar Arestas Finais (U-Perm)",
+    "group": "Última Camada (Permutação)",
+    "recognition": "Todos os cantos resolvidos. Uma face lateral está totalmente resolvida. Coloque-a atrás.",
+    "notes": "Resolve o cubo por completo!",
+    "algs": [
+      {
+        "notation": "R U' R U R U R U' R' U' R2",
+        "label": "U-Perm Clássico",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/3x3" }
+        ]
+      }
+    ]
+  }
+]

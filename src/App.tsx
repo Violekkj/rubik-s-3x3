@@ -16,6 +16,7 @@ import { TimerDisplay } from './features/timer/TimerDisplay';
 import { SolveHistoryTable } from './features/history/SolveHistoryTable';
 import { ProfileView } from './features/profile/ProfileView';
 import { StatsView } from './features/stats/StatsView';
+import { AlgorithmsView } from './features/algorithms/AlgorithmsView';
 import { useSessionStore } from './stores/sessionStore';
 import { useSettingsStore } from './stores/settingsStore';
 import { useSolveStore } from './stores/solveStore';
@@ -264,12 +265,7 @@ export default function App() {
 
           {activeTab === 'stats' && <StatsView />}
 
-          {activeTab === 'algorithms' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-2">Biblioteca de Algoritmos</h2>
-              <p className="text-cube-textMuted text-sm">Fase 4 de curadoria e validação.</p>
-            </div>
-          )}
+          {activeTab === 'algorithms' && <AlgorithmsView />}
         </div>
 
         {/* Barra Inferior Mobile */}

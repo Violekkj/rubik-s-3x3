@@ -1,0 +1,135 @@
+[
+  {
+    "id": "2l-pll-adj-corner",
+    "set": "2look-pll",
+    "name": "Permutação de Cantos Adjacentes (T-Perm)",
+    "group": "Passo 1: Permutar Cantos",
+    "recognition": "Dois cantos com a mesma cor (faróis) em uma face. Coloque os faróis à esquerda.",
+    "notes": "Se não houver faróis em nenhum lado, aplique o Y-Perm primeiro.",
+    "algs": [
+      {
+        "notation": "R U R' U' R' F R2 U' R' U' R U R' F'",
+        "label": "T-Perm Padrão",
+        "moveCountHTM": 14,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-pll-diag-corner",
+    "set": "2look-pll",
+    "name": "Permutação Diagonal de Cantos (Y-Perm)",
+    "group": "Passo 1: Permutar Cantos",
+    "recognition": "Nenhum par de faróis visível em nenhuma das 4 faces laterais.",
+    "notes": "Pode ser executado de qualquer ângulo para criar faróis.",
+    "algs": [
+      {
+        "notation": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+        "label": "Y-Perm Padrão",
+        "moveCountHTM": 17,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/pll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-pll-ua",
+    "set": "2look-pll",
+    "name": "Permutação de Arestas Ua (Horário)",
+    "group": "Passo 2: Permutar Arestas",
+    "recognition": "Todos os 4 cantos resolvidos; barra resolvida atrás; aresta frontal vai para a direita.",
+    "notes": "Se não houver nenhuma barra resolvida, faça Ua uma vez para criar uma barra.",
+    "algs": [
+      {
+        "notation": "R U' R U R U R U' R' U' R2",
+        "label": "Padrão RU",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/pll" }
+        ]
+      },
+      {
+        "notation": "M2 U M U2 M' U M2",
+        "label": "Variante Fatia M",
+        "moveCountHTM": 11,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-pll-ub",
+    "set": "2look-pll",
+    "name": "Permutação de Arestas Ub (Anti-horário)",
+    "group": "Passo 2: Permutar Arestas",
+    "recognition": "Todos os 4 cantos resolvidos; barra resolvida atrás; aresta frontal vai para a esquerda.",
+    "notes": "Espelho do caso Ua.",
+    "algs": [
+      {
+        "notation": "R2 U R U R' U' R' U' R' U R'",
+        "label": "Padrão RU",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/pll" }
+        ]
+      },
+      {
+        "notation": "M2 U' M U2 M' U' M2",
+        "label": "Variante Fatia M",
+        "moveCountHTM": 11,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-pll-h",
+    "set": "2look-pll",
+    "name": "Permutação de Arestas H (Opostas)",
+    "group": "Passo 2: Permutar Arestas",
+    "recognition": "Todos os cantos resolvidos; cada aresta precisa trocar com a aresta diretamente oposta.",
+    "notes": "Pode ser executado a partir de qualquer uma das 4 faces.",
+    "algs": [
+      {
+        "notation": "M2 U M2 U2 M2 U M2",
+        "label": "Padrão Mundial M2",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/pll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-pll-z",
+    "set": "2look-pll",
+    "name": "Permutação de Arestas Z (Adjacentes)",
+    "group": "Passo 2: Permutar Arestas",
+    "recognition": "Todos os cantos resolvidos; arestas vizinhas precisam trocar entre si (F<->R e B<->L).",
+    "notes": "Segure as duas arestas que trocam na frente e à direita.",
+    "algs": [
+      {
+        "notation": "M' U M2 U M2 U M' U2 M2",
+        "label": "Padrão M' U",
+        "moveCountHTM": 14,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/pll" }
+        ]
+      }
+    ]
+  }
+]

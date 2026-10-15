@@ -48,10 +48,17 @@ export class MoveParser {
 
       moves.push(token as MoveName);
 
-      // HTM: Rotações de cubo inteiro (x, y, z) não contam como movimentos em HTM
+      // HTM (Half Turn Metric oficial WCA):
+      // Rotações de cubo inteiro (x, y, z) = 0 movimentos
+      // Fatias internas (M, E, S) = 2 movimentos de faces
+      // Giros de faces externas = 1 movimento
       const base = token.replace(/['2w]/g, '');
-      if (!['x', 'y', 'z'].includes(base)) {
-        htmCount++;
+      if (['x', 'y', 'z'].includes(base)) {
+        // Não conta
+      } else if (['M', 'E', 'S'].includes(base)) {
+        htmCount += 2;
+      } else {
+        htmCount += 1;
       }
     }
 

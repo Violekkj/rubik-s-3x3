@@ -1,0 +1,124 @@
+[
+  {
+    "id": "f2l-01",
+    "set": "f2l",
+    "caseNumber": 1,
+    "name": "F2L 1 (Inserção Básica Direita)",
+    "group": "Pares Básicos",
+    "recognition": "Canto e aresta já conectados corretamente no topo.",
+    "notes": "Basta afastar o par, levantar o slot e inserir.",
+    "algs": [
+      {
+        "notation": "U R U' R'",
+        "label": "Padrão Intuitivo",
+        "moveCountHTM": 4,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/f2l" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/F2L/F2L_1" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f2l-02",
+    "set": "f2l",
+    "caseNumber": 2,
+    "name": "F2L 2 (Inserção Básica Esquerda)",
+    "group": "Pares Básicos",
+    "recognition": "Canto e aresta conectados no topo para entrar no slot da esquerda.",
+    "notes": "Espelho da inserção à direita.",
+    "algs": [
+      {
+        "notation": "y' U' R' U R",
+        "label": "Inserção Espelho",
+        "moveCountHTM": 4,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/f2l" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f2l-03",
+    "set": "f2l",
+    "caseNumber": 3,
+    "name": "F2L 3 (Cores Diferentes no Topo)",
+    "group": "Peças Separadas",
+    "recognition": "Canto e aresta no andar U; cores do topo são diferentes e o branco está virado para o lado.",
+    "notes": "Inserção direta em 3 movimentos.",
+    "algs": [
+      {
+        "notation": "R U R'",
+        "label": "Inserção Direta (3 movimentos)",
+        "moveCountHTM": 3,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/f2l" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f2l-04",
+    "set": "f2l",
+    "caseNumber": 4,
+    "name": "F2L 4 (Cores Iguais no Topo)",
+    "group": "Peças Separadas",
+    "recognition": "Canto e aresta no andar U; cores do topo são iguais.",
+    "notes": "Esconde o canto, reposiciona a aresta e emparelha.",
+    "algs": [
+      {
+        "notation": "y' R' U' R",
+        "label": "Padrão Mais Usado",
+        "moveCountHTM": 3,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/f2l" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f2l-05",
+    "set": "f2l",
+    "caseNumber": 5,
+    "name": "F2L 5 (Branco para Cima)",
+    "group": "Canto com Branco no Topo",
+    "recognition": "Adesivo branco do canto está virado para cima no topo.",
+    "notes": "Alinhe a aresta com o centro lateral, esconda a aresta e coloque o canto sobre ela.",
+    "algs": [
+      {
+        "notation": "U R U2 R' U R U' R'",
+        "label": "Padrão RU",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/f2l" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "f2l-06",
+    "set": "f2l",
+    "caseNumber": 6,
+    "name": "F2L 6 (Canto no Slot, Aresta no Topo)",
+    "group": "Canto no Primeiro Andar",
+    "recognition": "O canto está no slot certo mas mal orientado; a aresta correspondente está no topo.",
+    "notes": "Retira o canto combinando com a aresta.",
+    "algs": [
+      {
+        "notation": "R U' R' U R U' R'",
+        "label": "Padrão R U' R'",
+        "moveCountHTM": 7,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/f2l" }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "id": "2l-oll-line",
+    "set": "2look-oll",
+    "name": "Linha Horizontal (Cruz)",
+    "group": "Passo 1: Orientar Arestas (Cruz Amarela)",
+    "recognition": "Linha horizontal de 3 peças amarelas no centro do topo.",
+    "notes": "Mantenha a linha na posição horizontal antes de executar.",
+    "algs": [
+      {
+        "notation": "F R U R' U' F'",
+        "label": "Padrão Clássico (FRURUF)",
+        "moveCountHTM": 6,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-small-l",
+    "set": "2look-oll",
+    "name": "Formato de L (Cruz)",
+    "group": "Passo 1: Orientar Arestas (Cruz Amarela)",
+    "recognition": "Duas arestas amarelas adjacentes formando um 'L' apontando para trás e para a esquerda.",
+    "notes": "Executado com movimento duplo de face Fw (f).",
+    "algs": [
+      {
+        "notation": "Fw R U R' U' Fw'",
+        "label": "Padrão com Fw (f)",
+        "moveCountHTM": 6,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-dot",
+    "set": "2look-oll",
+    "name": "Ponto Central (Cruz)",
+    "group": "Passo 1: Orientar Arestas (Cruz Amarela)",
+    "recognition": "Apenas o centro amarelo orientado no topo (nenhuma aresta amarela virada para cima).",
+    "notes": "Combina o caso da Linha com o caso do 'L'.",
+    "algs": [
+      {
+        "notation": "F R U R' U' F' Fw R U R' U' Fw'",
+        "label": "Combinação Linha + L",
+        "moveCountHTM": 12,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-sune",
+    "set": "2look-oll",
+    "name": "Sune",
+    "group": "Passo 2: Orientar Cantos",
+    "recognition": "Cruz pronta e apenas 1 canto amarelo voltado para cima. Coloque esse canto na frente/esquerda e veja se há amarelo voltado para a frente no canto direito.",
+    "notes": "O algoritmo de orientação mais fundamental do speedcubing.",
+    "algs": [
+      {
+        "notation": "R U R' U R U2 R'",
+        "label": "Sune Oficial WCA",
+        "moveCountHTM": 7,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-antisune",
+    "set": "2look-oll",
+    "name": "Anti-Sune",
+    "group": "Passo 2: Orientar Cantos",
+    "recognition": "Apenas 1 canto amarelo voltado para cima. Coloque esse canto na frente/esquerda e o amarelo do canto direito está voltado para a direita.",
+    "notes": "Inverso exato do Sune.",
+    "algs": [
+      {
+        "notation": "R U2 R' U' R U' R'",
+        "label": "Padrão Anti-Sune",
+        "moveCountHTM": 7,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-h",
+    "set": "2look-oll",
+    "name": "H (Dois Faróis Opostos)",
+    "group": "Passo 2: Orientar Cantos",
+    "recognition": "Cruz pronta e nenhum canto orientado para cima. Há faróis amarelos na frente e atrás.",
+    "notes": "Rápido de executar com triggers de Sune repetidos.",
+    "algs": [
+      {
+        "notation": "R U R' U R U' R' U R U2 R'",
+        "label": "Padrão Mais Usado",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-pi",
+    "set": "2look-oll",
+    "name": "Pi (Faróis de um lado e cantos opostos)",
+    "group": "Passo 2: Orientar Cantos",
+    "recognition": "Cruz pronta e nenhum canto orientado. Faróis de um lado e cantos virados para fora do outro.",
+    "notes": "Mantenha os faróis à esquerda.",
+    "algs": [
+      {
+        "notation": "R U2 R2 U' R2 U' R2 U2 R",
+        "label": "Padrão R2 U2",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-bowtie",
+    "set": "2look-oll",
+    "name": "Gravata Borboleta (L-Shape)",
+    "group": "Passo 2: Orientar Cantos",
+    "recognition": "Cruz pronta e dois cantos diagonalmente opostos voltados para cima.",
+    "notes": "Inicia com F' r U R'.",
+    "algs": [
+      {
+        "notation": "F' r U R' U' r' F R",
+        "label": "Padrão Ergonômico",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-chameleon",
+    "set": "2look-oll",
+    "name": "Camaleão (T-Shape)",
+    "group": "Passo 2: Orientar Cantos",
+    "recognition": "Cruz pronta e dois cantos adjacentes orientados, com os outros dois virados para os lados opostos.",
+    "notes": "Sem regrip.",
+    "algs": [
+      {
+        "notation": "r U R' U' r' F R F'",
+        "label": "Padrão com r",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2l-oll-headlights",
+    "set": "2look-oll",
+    "name": "Faróis (U-Shape)",
+    "group": "Passo 2: Orientar Cantos",
+    "recognition": "Cruz pronta e dois cantos adjacentes voltados para cima, com os outros dois formando faróis.",
+    "notes": "Coloque os faróis na frente.",
+    "algs": [
+      {
+        "notation": "R2 D R' U2 R D' R' U2 R'",
+        "label": "Padrão com D",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/2look/oll" }
+        ]
+      }
+    ]
+  }
+]

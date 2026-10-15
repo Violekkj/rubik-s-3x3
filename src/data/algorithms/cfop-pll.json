@@ -1,0 +1,549 @@
+[
+  {
+    "id": "pll-ua",
+    "set": "pll",
+    "name": "Ua-Perm",
+    "group": "Troca de 3 arestas (sentido horário)",
+    "recognition": "Faróis em 3 lados, barra resolvida atrás; aresta frontal deve ir para a direita.",
+    "notes": "Um dos algoritmos mais rápidos do CFOP. Pode ser feito com movimentos M ou com R U.",
+    "algs": [
+      {
+        "notation": "R U' R U R U R U' R' U' R2",
+        "label": "Padrão RU (Mais rápido / Sem regrip)",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ua" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      },
+      {
+        "notation": "M2 U M U2 M' U M2",
+        "label": "Variante com Fatia M (Muito popular para 2H)",
+        "moveCountHTM": 11,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ua" },
+          { "name": "SpeedSolving Wiki", "url": "https://www.speedsolving.com/wiki/index.php/PLL#U_Permutation_:_a" }
+        ]
+      },
+      {
+        "notation": "R2 U' R' U' R U R U R U' R",
+        "label": "Alternativa RU iniciando com R2",
+        "moveCountHTM": 11,
+        "popularityRank": 3,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ua" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-ub",
+    "set": "pll",
+    "name": "Ub-Perm",
+    "group": "Troca de 3 arestas (sentido anti-horário)",
+    "recognition": "Faróis em 3 lados, barra resolvida atrás; aresta frontal deve ir para a esquerda.",
+    "notes": "Par espelho do Ua-Perm.",
+    "algs": [
+      {
+        "notation": "R2 U R U R' U' R' U' R' U R'",
+        "label": "Padrão RU (Mais rápido)",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ub" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      },
+      {
+        "notation": "M2 U' M U2 M' U' M2",
+        "label": "Variante Fatia M",
+        "moveCountHTM": 11,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ub" }
+        ]
+      },
+      {
+        "notation": "R' U R' U' R' U' R' U R U R2",
+        "label": "Alternativa RU sem R2 inicial",
+        "moveCountHTM": 11,
+        "popularityRank": 3,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ub" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-h",
+    "set": "pll",
+    "name": "H-Perm",
+    "group": "Troca de arestas opostas",
+    "recognition": "Faróis em todos os 4 lados; arestas opostas trocadas entre si (F<->B e L<->R).",
+    "notes": "Extremamente rápido de executar usando os dedos anelar e médio para os giros M2.",
+    "algs": [
+      {
+        "notation": "M2 U M2 U2 M2 U M2",
+        "label": "Padrão Mundial M2 U",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/H" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      },
+      {
+        "notation": "M2 U' M2 U2 M2 U' M2",
+        "label": "Variação com U' (Ergonômica)",
+        "moveCountHTM": 11,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/H" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-z",
+    "set": "pll",
+    "name": "Z-Perm",
+    "group": "Troca de arestas adjacentes",
+    "recognition": "Faróis em todos os 4 lados; arestas adjacentes trocadas (F<->R e B<->L).",
+    "notes": "Certifique-se de posicionar as arestas que trocam na frente e à direita antes de executar.",
+    "algs": [
+      {
+        "notation": "M' U M2 U M2 U M' U2 M2",
+        "label": "Padrão Mais Usado (M' U)",
+        "moveCountHTM": 14,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Z" }
+        ]
+      },
+      {
+        "notation": "M2 U M2 U M' U2 M2 U2 M'",
+        "label": "Variante iniciando com M2",
+        "moveCountHTM": 14,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "CubeSkills", "url": "https://cubeskills.com" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Z" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-t",
+    "set": "pll",
+    "name": "T-Perm",
+    "group": "Troca adjacente de cantos e arestas",
+    "recognition": "Faróis à esquerda, duas arestas trocando (F e R).",
+    "notes": "O PLL mais famoso do cubo, composto pelos triggers Sexy Move e Sledgehammer.",
+    "algs": [
+      {
+        "notation": "R U R' U' R' F R2 U' R' U' R U R' F'",
+        "label": "Padrão Oficial da Comunidade",
+        "moveCountHTM": 14,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/T" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      },
+      {
+        "notation": "R2 U R2 U' R2 U' D R2 U' R2 U R2 D'",
+        "label": "Sem rotações F (R2 D)",
+        "moveCountHTM": 13,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/T" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-aa",
+    "set": "pll",
+    "name": "Aa-Perm",
+    "group": "Troca de 3 cantos (sentido horário)",
+    "recognition": "Faróis na face traseira e barra 1x2x2 na frente à esquerda.",
+    "notes": "Executado geralmente com a barra 1x2x2 resolvida na frente/esquerda.",
+    "algs": [
+      {
+        "notation": "x R' U R' D2 R U' R' D2 R2 x'",
+        "label": "Padrão com D2",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Aa" }
+        ]
+      },
+      {
+        "notation": "l' U R' D2 R U' R' D2 R2 x'",
+        "label": "Início com l'",
+        "moveCountHTM": 9,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-ab",
+    "set": "pll",
+    "name": "Ab-Perm",
+    "group": "Troca de 3 cantos (sentido anti-horário)",
+    "recognition": "Faróis na face traseira e barra 1x2x2 na frente à direita.",
+    "notes": "Inverso do Aa-Perm.",
+    "algs": [
+      {
+        "notation": "x R2 D2 R U R' D2 R U' R x'",
+        "label": "Padrão Oficial (Mais rápido)",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ab" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      },
+      {
+        "notation": "x' R U' R D2 R' U R D2 R2 x",
+        "label": "Variante Inversa com R U'",
+        "moveCountHTM": 9,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ab" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-e",
+    "set": "pll",
+    "name": "E-Perm",
+    "group": "Troca diagonal de cantos",
+    "recognition": "Sem faróis em nenhum lado; nenhuma barra de cor coincide.",
+    "notes": "Mantém todas as 4 arestas intactas e permuta diagonalmente os cantos.",
+    "algs": [
+      {
+        "notation": "x' R U' R' D R U R' D' R U R' D R U' R' D' x",
+        "label": "Padrão Clássico",
+        "moveCountHTM": 16,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/E" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-f",
+    "set": "pll",
+    "name": "F-Perm",
+    "group": "Troca adjacente de cantos e arestas",
+    "recognition": "Barra de 1x3 resolvida de um lado e faróis opostos.",
+    "notes": "Inicia com setup para trigger de T-Perm.",
+    "algs": [
+      {
+        "notation": "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
+        "label": "Padrão Mais Popular",
+        "moveCountHTM": 18,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/F" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-ja",
+    "set": "pll",
+    "name": "Ja-Perm",
+    "group": "Troca adjacente de cantos e arestas",
+    "recognition": "Barra 1x3 resolvida na face esquerda; faróis à direita.",
+    "notes": "Executado rapidamente com trigger R' U L'.",
+    "algs": [
+      {
+        "notation": "x R2 F R F' R U2 r' U r U2 x'",
+        "label": "Padrão Ergonômico",
+        "moveCountHTM": 10,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ja" }
+        ]
+      },
+      {
+        "notation": "y' R' U2 R U R' U2 L U' R U L'",
+        "label": "Alternativa com L",
+        "moveCountHTM": 11,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-jb",
+    "set": "pll",
+    "name": "Jb-Perm",
+    "group": "Troca adjacente de cantos e arestas",
+    "recognition": "Barra 1x3 resolvida na face direita; faróis à esquerda.",
+    "notes": "Considerado por muitos o PLL mais rápido de todos.",
+    "algs": [
+      {
+        "notation": "R U R' F' R U R' U' R' F R2 U' R'",
+        "label": "Padrão Mundial (Mais rápido)",
+        "moveCountHTM": 13,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Jb" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-ra",
+    "set": "pll",
+    "name": "Ra-Perm",
+    "group": "Troca adjacente de cantos e arestas",
+    "recognition": "Faróis à esquerda e barra 1x2 na frente.",
+    "notes": "Fluido e sem regrip.",
+    "algs": [
+      {
+        "notation": "R U' R' U' R U R D R' U' R D' R' U2 R'",
+        "label": "Padrão com D",
+        "moveCountHTM": 15,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ra" }
+        ]
+      },
+      {
+        "notation": "R U R' F' R U2 R' U2 R' F R U R U2 R'",
+        "label": "Alternativa RU F (Sem D)",
+        "moveCountHTM": 15,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-rb",
+    "set": "pll",
+    "name": "Rb-Perm",
+    "group": "Troca adjacente de cantos e arestas",
+    "recognition": "Faróis na frente e barra 1x2 à esquerda.",
+    "notes": "Par do Ra-Perm.",
+    "algs": [
+      {
+        "notation": "R' U2 R U2 R' F R U R' U' R' F' R2",
+        "label": "Padrão Mais Rápido",
+        "moveCountHTM": 13,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Rb" }
+        ]
+      },
+      {
+        "notation": "R' U2 R' D' R U' R' D R U R U' R' U' R",
+        "label": "Variante com D'",
+        "moveCountHTM": 15,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-v",
+    "set": "pll",
+    "name": "V-Perm",
+    "group": "Troca diagonal de cantos",
+    "recognition": "Uma barra 2x2 formada (bloco) e cantos opostos trocando.",
+    "notes": "Rotacionar o cubo para alinhar o bloco antes da execução.",
+    "algs": [
+      {
+        "notation": "R' U R' U' y R' F' R2 U' R' U R' F R F",
+        "label": "Padrão Mais Popular",
+        "moveCountHTM": 14,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/V" }
+        ]
+      },
+      {
+        "notation": "R' U R' d' R' F' R2 U' R' U R' F R F",
+        "label": "Variação com d'",
+        "moveCountHTM": 14,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-y",
+    "set": "pll",
+    "name": "Y-Perm",
+    "group": "Troca diagonal de cantos",
+    "recognition": "Faróis em nenhum lado; cantos opostos e arestas adjacentes trocam.",
+    "notes": "Inicia com trigger de F (Fruruf modificado). Muito intuitivo.",
+    "algs": [
+      {
+        "notation": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+        "label": "Padrão Clássico WCA",
+        "moveCountHTM": 17,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Y" },
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-na",
+    "set": "pll",
+    "name": "Na-Perm",
+    "group": "Troca diagonal de cantos e arestas opostas",
+    "recognition": "Duas barras 1x2 em lados opostos.",
+    "notes": "Pode ser feito com triggers de J-Perm encadeados.",
+    "algs": [
+      {
+        "notation": "R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'",
+        "label": "Padrão Baseado em Jb-Perm",
+        "moveCountHTM": 21,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Na" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-nb",
+    "set": "pll",
+    "name": "Nb-Perm",
+    "group": "Troca diagonal de cantos e arestas opostas",
+    "recognition": "Duas barras 1x2 em lados opostos (espelho do Na).",
+    "notes": "Algoritmo ergonômico.",
+    "algs": [
+      {
+        "notation": "R' U R U' R' F' U' F R U R' F R' F' R U' R",
+        "label": "Padrão Ergonômico",
+        "moveCountHTM": 17,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Nb" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-ga",
+    "set": "pll",
+    "name": "Ga-Perm",
+    "group": "Permutações G",
+    "recognition": "Faróis à esquerda e barra 1x2 na frente à direita.",
+    "notes": "Família de permutações G mais rápida.",
+    "algs": [
+      {
+        "notation": "R2 U R' U R' U' R U' R2 D U' R' U R D'",
+        "label": "Padrão R2 U D",
+        "moveCountHTM": 15,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Ga" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-gb",
+    "set": "pll",
+    "name": "Gb-Perm",
+    "group": "Permutações G",
+    "recognition": "Faróis na frente e barra 1x2 atrás à direita.",
+    "notes": "Executado com fluidez no topo.",
+    "algs": [
+      {
+        "notation": "R' U' R U D' R2 U R' U R U' R U' R2 D",
+        "label": "Padrão R' U'",
+        "moveCountHTM": 15,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Gb" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-gc",
+    "set": "pll",
+    "name": "Gc-Perm",
+    "group": "Permutações G",
+    "recognition": "Faróis à direita e barra 1x2 na frente à esquerda.",
+    "notes": "Espelho do Ga-Perm.",
+    "algs": [
+      {
+        "notation": "R2 U' R U' R U R' U R2 D' U R U' R' D",
+        "label": "Padrão R2 U'",
+        "moveCountHTM": 15,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Gc" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pll-gd",
+    "set": "pll",
+    "name": "Gd-Perm",
+    "group": "Permutações G",
+    "recognition": "Faróis atrás e barra 1x2 na frente à esquerda.",
+    "notes": "Espelho do Gb-Perm.",
+    "algs": [
+      {
+        "notation": "R U R' U' D R2 U' R U' R' U R' U R2 D'",
+        "label": "Padrão R U",
+        "moveCountHTM": 15,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/pll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/PLL/Gd" }
+        ]
+      }
+    ]
+  }
+]

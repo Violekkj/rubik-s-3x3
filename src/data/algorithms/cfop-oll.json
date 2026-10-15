@@ -1,0 +1,263 @@
+[
+  {
+    "id": "oll-01",
+    "set": "oll",
+    "caseNumber": 1,
+    "name": "OLL 1",
+    "group": "Ponto (Nenhuma aresta orientada)",
+    "recognition": "Ponto central sem nenhuma aresta amarela virada para cima; nenhum canto no topo.",
+    "notes": "Executado combinando Fruruf com Sexy move modificado.",
+    "algs": [
+      {
+        "notation": "R U2 R2 F R F' U2 R' F R F'",
+        "label": "Padrão Mais Rápido",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_1" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-02",
+    "set": "oll",
+    "caseNumber": 2,
+    "name": "OLL 2",
+    "group": "Ponto (Nenhuma aresta orientada)",
+    "recognition": "Ponto central e dois cantos adjacentes orientados.",
+    "notes": "Usa fatias e movimentos suaves.",
+    "algs": [
+      {
+        "notation": "r U r' U2 r U2 R' U2 R U' r'",
+        "label": "Padrão com r",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_2" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-21",
+    "set": "oll",
+    "caseNumber": 21,
+    "name": "OLL 21 (H)",
+    "group": "Cruz (Todas as arestas orientadas)",
+    "recognition": "Cruz pronta e nenhum canto orientado. Faróis duplos opostos.",
+    "notes": "Rápido e ergonômico.",
+    "algs": [
+      {
+        "notation": "R U R' U R U' R' U R U2 R'",
+        "label": "Padrão Duplo Sune",
+        "moveCountHTM": 11,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_21" }
+        ]
+      },
+      {
+        "notation": "R U2 R' U' R U R' U' R U' R'",
+        "label": "Variante Alternativa",
+        "moveCountHTM": 11,
+        "popularityRank": 2,
+        "sources": [
+          { "name": "CubeSkills", "url": "https://cubeskills.com" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-22",
+    "set": "oll",
+    "caseNumber": 22,
+    "name": "OLL 22 (Pi)",
+    "group": "Cruz (Todas as arestas orientadas)",
+    "recognition": "Cruz pronta. Faróis à esquerda e cantos opostos à direita.",
+    "notes": "Executado mantendo os faróis à esquerda.",
+    "algs": [
+      {
+        "notation": "R U2 R2 U' R2 U' R2 U2 R",
+        "label": "Padrão R2 U2",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_22" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-23",
+    "set": "oll",
+    "caseNumber": 23,
+    "name": "OLL 23 (Headlights)",
+    "group": "Cruz (Todas as arestas orientadas)",
+    "recognition": "Cruz pronta e dois cantos adjacentes orientados; faróis na frente.",
+    "notes": "Composto por R2 D e cancelamentos.",
+    "algs": [
+      {
+        "notation": "R2 D R' U2 R D' R' U2 R'",
+        "label": "Padrão com D",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_23" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-24",
+    "set": "oll",
+    "caseNumber": 24,
+    "name": "OLL 24 (Chameleon)",
+    "group": "Cruz (Todas as arestas orientadas)",
+    "recognition": "Cruz pronta e dois cantos adjacentes orientados; cantos não orientados virados para fora.",
+    "notes": "Inicia com r U R' U'.",
+    "algs": [
+      {
+        "notation": "r U R' U' r' F R F'",
+        "label": "Padrão com r",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_24" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-25",
+    "set": "oll",
+    "caseNumber": 25,
+    "name": "OLL 25 (Bowtie)",
+    "group": "Cruz (Todas as arestas orientadas)",
+    "recognition": "Cruz pronta e dois cantos diagonalmente opostos orientados.",
+    "notes": "Executado com F' r U R'.",
+    "algs": [
+      {
+        "notation": "F' r U R' U' r' F R",
+        "label": "Padrão Ergonômico",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_25" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-26",
+    "set": "oll",
+    "caseNumber": 26,
+    "name": "OLL 26 (Anti-Sune)",
+    "group": "Cruz (Todas as arestas orientadas)",
+    "recognition": "Cruz pronta e apenas 1 canto orientado; canto frontal-direito aponta para a direita.",
+    "notes": "Inverso do Sune.",
+    "algs": [
+      {
+        "notation": "R U2 R' U' R U' R'",
+        "label": "Padrão Anti-Sune",
+        "moveCountHTM": 7,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_26" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-27",
+    "set": "oll",
+    "caseNumber": 27,
+    "name": "OLL 27 (Sune)",
+    "group": "Cruz (Todas as arestas orientadas)",
+    "recognition": "Cruz pronta e apenas 1 canto orientado; canto frontal-direito aponta para a frente.",
+    "notes": "O caso mais icônico de OLL.",
+    "algs": [
+      {
+        "notation": "R U R' U R U2 R'",
+        "label": "Sune Tradicional",
+        "moveCountHTM": 7,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_27" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-33",
+    "set": "oll",
+    "caseNumber": 33,
+    "name": "OLL 33 (T-Shape)",
+    "group": "Formato de T",
+    "recognition": "Linha central e uma aresta formando a letra T no topo.",
+    "notes": "Trigger Fruruf seguido de Sexy move.",
+    "algs": [
+      {
+        "notation": "R U R' U' R' F R F'",
+        "label": "Padrão T-Shape",
+        "moveCountHTM": 8,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_33" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-37",
+    "set": "oll",
+    "caseNumber": 37,
+    "name": "OLL 37",
+    "group": "Formato de Peixe",
+    "recognition": "Formato de peixe com cantos opostos.",
+    "notes": "Sem regrip.",
+    "algs": [
+      {
+        "notation": "F R U' R' U' R U R' F'",
+        "label": "Padrão Fruruf Invertido",
+        "moveCountHTM": 9,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_37" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oll-45",
+    "set": "oll",
+    "caseNumber": 45,
+    "name": "OLL 45 (T-Shape)",
+    "group": "Formato de T",
+    "recognition": "Formato de T com cantos formando faróis frontais.",
+    "notes": "FRURUF clássico.",
+    "algs": [
+      {
+        "notation": "F R U R' U' F'",
+        "label": "FRURUF Padrão",
+        "moveCountHTM": 6,
+        "popularityRank": 1,
+        "sources": [
+          { "name": "J Perm", "url": "https://jperm.net/algs/oll" },
+          { "name": "SpeedCubeDB", "url": "https://speedcubedb.com/a/3x3/OLL/OLL_45" }
+        ]
+      }
+    ]
+  }
+]
