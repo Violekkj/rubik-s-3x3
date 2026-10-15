@@ -1,0 +1,39 @@
+:root {
+  /* Paleta Base Escura */
+  --color-bg-base: #030F1A;
+  --color-surface-1: #081A2B;
+  --color-surface-2: #0E253B;
+  --color-surface-3: #153350;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(0, 212, 255, 0.3);
+  
+  /* Acentos */
+  --color-accent-cyan: #00D4FF;
+  --color-accent-cyan-hover: #33DFFF;
+  --color-accent-glow: rgba(0, 212, 255, 0.2);
+
+  /* Texto */
+  --color-text-primary: #E8F1F8;
+  --color-text-secondary: #8BA2B8;
+  --color-text-dim: #536E87;
+
+  /* Estados do Timer */
+  --color-timer-ready: #2BE04B;
+  --color-timer-holding: #FF3B3B;
+  --color-timer-inspect: #FFB800;
+  --color-timer-inspect-warn: #FF3B3B;
+
+  /* Cores das Peças do Cubo (Customizáveis) */
+  --color-cube-u: #F4F4F4; /* Branco */
+  --color-cube-d: #FFE600; /* Amarelo */
+  --color-cube-f: #2BE04B; /* Verde */
+  --color-cube-b: #1E63FF; /* Azul */
+  --color-cube-r: #FF3B3B; /* Vermelho */
+  --color-cube-l: #FF8A1E; /* Laranja */
+
+  /* Espaçamentos e Raios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
