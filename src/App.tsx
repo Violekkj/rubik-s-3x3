@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Timer,
   History,
@@ -9,7 +9,14 @@ import {
   Eye,
   EyeOff,
   Layers,
+  Plus,
+  ChevronDown,
 } from 'lucide-react';
+import { TimerDisplay } from './features/timer/TimerDisplay';
+import { useSessionStore } from './stores/sessionStore';
+import { useSettingsStore } from './stores/settingsStore';
+import { useSolveStore } from './stores/solveStore';
+import { requestStoragePersistence } from './data/db';
 
 export type ActiveTab = 'timer' | 'history' | 'profile' | 'stats' | 'algorithms';
 
@@ -17,6 +24,45 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('timer');
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const [isNewSessionModalOpen, setIsNewSessionModalOpen] = useState<boolean>(false);
+  const [newSessionName, setNewSessionName] = useState<string>('');
+  const [isSessionDropdownOpen, setIsSessionDropdownOpen] = useState<boolean>(false);
+
+  const {
+    sessions,
+    activeSessionId,
+    loadSessions,
+    createSession,
+    setActiveSessionId,
+  } = useSessionStore();
+
+  const { loadSettings } = useSettingsStore();
+  const { loadSolvesForSession } = useSolveStore();
+
+  // Inicializa dados locais
+  useEffect(() => {
+    loadSessions();
+    loadSettings();
+    requestStoragePersistence();
+  }, [loadSessions, loadSettings]);
+
+  // Carrega solves sempre que a sessão ativa mudar
+  useEffect(() => {
+    if (activeSessionId) {
+      loadSolvesForSession(activeSessionId);
+    }
+  }, [activeSessionId, loadSolvesForSession]);
+
+  const activeSession = sessions.find(s => s.id === activeSessionId) || sessions[0];
+
+  const handleCreateSession = async () => {
+    if (newSessionName.trim()) {
+      await createSession(newSessionName.trim());
+      setNewSessionName('');
+      setIsNewSessionModalOpen(false);
+      setIsSessionDropdownOpen(false);
+    }
+  };
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-cube-bg text-cube-text flex-col md:flex-row">
@@ -119,7 +165,7 @@ export default function App() {
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
         {/* Top Header */}
         {!isFocusMode && (
-          <header className="h-14 border-b border-cube-border bg-cube-surface1/60 backdrop-blur-md px-4 flex items-center justify-between select-none z-10">
+          <header className="h-14 border-b border-cube-border bg-cube-surface1/60 backdrop-blur-md px-4 flex items-center justify-between select-none z-30">
             <div className="flex items-center gap-3">
               <div className="md:hidden flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-cube-cyan flex items-center justify-center">
@@ -128,10 +174,59 @@ export default function App() {
                 <span className="font-bold text-lg text-white">CubeLab</span>
               </div>
 
-              {/* Seletor de Sessão */}
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cube-surface2 border border-cube-border text-xs font-semibold text-cube-cyan">
-                <span>Sessão:</span>
-                <span className="text-white">Sessão 1</span>
+              {/* Seletor de Sessão Dropdown */}
+              <div className="relative">
+                <button
+                  id="btn-session-dropdown"
+                  onClick={() => setIsSessionDropdownOpen(!isSessionDropdownOpen)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cube-surface2 border border-cube-border hover:border-cube-cyan/40 text-xs font-semibold text-cube-cyan transition-colors"
+                >
+                  <span className="text-cube-textDim">Sessão:</span>
+                  <span className="text-white max-w-[120px] truncate">
+                    {activeSession?.name || 'Sessão 1'}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5 text-cube-textMuted" />
+                </button>
+
+                {isSessionDropdownOpen && (
+                  <div className="absolute left-0 mt-2 w-56 bg-cube-surface2 border border-cube-border rounded-xl shadow-2xl py-1 z-50 animate-scaleUp">
+                    <div className="px-3 py-1.5 text-[10px] font-bold text-cube-textDim uppercase tracking-wider border-b border-cube-border">
+                      Suas Sessões
+                    </div>
+                    <div className="max-h-48 overflow-y-auto py-1">
+                      {sessions.map(s => (
+                        <button
+                          key={s.id}
+                          onClick={() => {
+                            setActiveSessionId(s.id);
+                            setIsSessionDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-3 py-2 text-xs font-medium flex items-center justify-between hover:bg-cube-surface3 transition-colors ${
+                            s.id === activeSessionId ? 'text-cube-cyan font-bold bg-cube-surface3/40' : 'text-cube-text'
+                          }`}
+                        >
+                          <span className="truncate">{s.name}</span>
+                          {s.id === activeSessionId && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-cube-cyan" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="p-2 border-t border-cube-border">
+                      <button
+                        onClick={() => {
+                          setIsNewSessionModalOpen(true);
+                          setIsSessionDropdownOpen(false);
+                        }}
+                        className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-cube-surface1 hover:bg-cube-cyan hover:text-cube-bg text-xs font-semibold text-cube-cyan transition-colors"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Nova Sessão</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -142,7 +237,7 @@ export default function App() {
                 title={isFocusMode ? 'Sair do Modo Foco' : 'Ativar Modo Foco'}
                 className="p-2 rounded-lg bg-cube-surface2 hover:bg-cube-surface3 text-cube-textMuted hover:text-white transition-colors"
               >
-                {isFocusMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {isFocusMode ? <EyeOff className="w-4 h-4 text-cube-cyan" /> : <Eye className="w-4 h-4" />}
               </button>
 
               <button
@@ -157,18 +252,8 @@ export default function App() {
         )}
 
         {/* View da Tab Ativa */}
-        <div className="flex-1 overflow-y-auto relative p-4 flex flex-col">
-          {activeTab === 'timer' && (
-            <div className="flex-1 flex flex-col items-center justify-center text-center">
-              <div className="text-cube-textMuted text-sm mb-2">Fundamentos do Timer Prontos</div>
-              <div className="tabular-timer text-7xl md:text-9xl font-bold tracking-tight text-white mb-6">
-                0.00
-              </div>
-              <p className="text-xs text-cube-textDim max-w-sm">
-                Fase 1 (Fundamentos, modelo de 54 facelets e máquina de estados) concluída com sucesso.
-              </p>
-            </div>
-          )}
+        <div className="flex-1 overflow-hidden relative flex flex-col">
+          {activeTab === 'timer' && <TimerDisplay />}
 
           {activeTab === 'history' && (
             <div className="p-6">
@@ -255,13 +340,45 @@ export default function App() {
         )}
       </main>
 
-      {/* Modal de Configurações Placeholder */}
+      {/* Modal Criar Nova Sessão */}
+      {isNewSessionModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-cube-surface2 border border-cube-border rounded-2xl w-full max-w-sm p-6 shadow-2xl animate-scaleUp">
+            <h3 className="text-lg font-bold text-white mb-3">Criar Nova Sessão</h3>
+            <input
+              type="text"
+              autoFocus
+              value={newSessionName}
+              onChange={e => setNewSessionName(e.target.value)}
+              placeholder="Ex: Treino OLL, Competição..."
+              className="w-full bg-cube-surface1 border border-cube-border rounded-xl p-3 text-sm text-white placeholder-cube-textDim focus:outline-none focus:border-cube-cyan transition-colors"
+            />
+            <div className="mt-5 flex items-center justify-end gap-2">
+              <button
+                onClick={() => setIsNewSessionModalOpen(false)}
+                className="px-4 py-2 rounded-xl text-xs font-medium text-cube-textMuted hover:text-white"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleCreateSession}
+                disabled={!newSessionName.trim()}
+                className="px-5 py-2 rounded-xl text-xs font-bold bg-cube-cyan text-cube-bg hover:bg-cube-cyanGlow disabled:opacity-50"
+              >
+                Criar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Configurações */}
       {isSettingsOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-cube-surface2 border border-cube-border rounded-2xl w-full max-w-md p-6 shadow-2xl">
             <h3 className="text-xl font-bold mb-4">Configurações</h3>
             <p className="text-sm text-cube-textMuted mb-6">
-              Opções de inspeção WCA, limiar de segurar, precisão e temas serão configurados na Fase 2 e 5.
+              Opções de inspeção WCA, limiar de segurar, precisão e temas.
             </p>
             <button
               onClick={() => setIsSettingsOpen(false)}
