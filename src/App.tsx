@@ -13,6 +13,9 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { TimerDisplay } from './features/timer/TimerDisplay';
+import { SolveHistoryTable } from './features/history/SolveHistoryTable';
+import { ProfileView } from './features/profile/ProfileView';
+import { StatsView } from './features/stats/StatsView';
 import { useSessionStore } from './stores/sessionStore';
 import { useSettingsStore } from './stores/settingsStore';
 import { useSolveStore } from './stores/solveStore';
@@ -255,26 +258,11 @@ export default function App() {
         <div className="flex-1 overflow-hidden relative flex flex-col">
           {activeTab === 'timer' && <TimerDisplay />}
 
-          {activeTab === 'history' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-2">Histórico de Solves</h2>
-              <p className="text-cube-textMuted text-sm">Próxima fase de integração.</p>
-            </div>
-          )}
+          {activeTab === 'history' && <SolveHistoryTable />}
 
-          {activeTab === 'profile' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-2">Perfil & PBs</h2>
-              <p className="text-cube-textMuted text-sm">Próxima fase de integração.</p>
-            </div>
-          )}
+          {activeTab === 'profile' && <ProfileView />}
 
-          {activeTab === 'stats' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-2">Estatísticas</h2>
-              <p className="text-cube-textMuted text-sm">Próxima fase de integração.</p>
-            </div>
-          )}
+          {activeTab === 'stats' && <StatsView />}
 
           {activeTab === 'algorithms' && (
             <div className="p-6">
