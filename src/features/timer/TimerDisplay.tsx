@@ -27,7 +27,6 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({ isFocusMode = false 
     solves,
     lastSolve,
     newPbAlert,
-    isTimerRunning,
     setIsTimerRunning,
     toast,
     showToast,
@@ -650,10 +649,11 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({ isFocusMode = false 
       {selectedSolveModal && (
         <SolveDetailModal
           solve={selectedSolveModal}
+          solveIndex={solves.findIndex(s => s.id === selectedSolveModal.id) + 1}
+          isOpen={true}
           onClose={() => setSelectedSolveModal(null)}
-          onTogglePenalty={togglePenalty}
+          onUpdateSolve={updateSolve}
           onDeleteSolve={deleteSolve}
-          onUpdateNote={(id, note) => updateSolve(id, { note })}
         />
       )}
     </div>

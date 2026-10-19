@@ -3,6 +3,8 @@ import { X, Download, Upload, FileText, Check, AlertCircle } from 'lucide-react'
 import { db, SolveRecord, SessionRecord, UserSettingsRecord } from '../../data/db';
 import { useSessionStore } from '../../stores/sessionStore';
 import { useSolveStore } from '../../stores/solveStore';
+import { useProfileStore } from '../../stores/profileStore';
+import { ImageProcessor } from '../profile/imageProcessor';
 
 interface ExportImportModalProps {
   isOpen: boolean;
@@ -27,14 +29,42 @@ export const ExportImportModal: React.FC<ExportImportModalProps> = ({ isOpen, on
       const solves = await db.solves.toArray();
       const sessions = await db.sessions.toArray();
       const settings = await db.settings.get('default');
+      const profile = await db.profiles.get('current');
+
+      let exportedProfile = undefined;
+      if (profile) {
+        let avatarBase64: string | undefined = undefined;
+        let bannerBase64: string | undefined = undefined;
+        if (profile.avatarBlob) {
+          try {
+            avatarBase64 = await ImageProcessor.blobToBase64(profile.avatarBlob);
+          } catch (e) {
+            console.warn('Erro ao converter avatar para Base64:', e);
+          }
+        }
+        if (profile.bannerBlob) {
+          try {
+            bannerBase64 = await ImageProcessor.blobToBase64(profile.bannerBlob);
+          } catch (e) {
+            console.warn('Erro ao converter banner para Base64:', e);
+          }
+        }
+        const { avatarBlob, bannerBlob, ...restProfile } = profile;
+        exportedProfile = {
+          ...restProfile,
+          avatarBase64,
+          bannerBase64,
+        };
+      }
 
       const backupData = {
         app: 'CubeLab',
-        schemaVersion: 1,
+        schemaVersion: 2,
         exportedAt: new Date().toISOString(),
         sessions,
         solves,
         settings,
+        profile: exportedProfile,
       };
 
       const blob = new Blob([JSON.stringify(backupData, null, 2)], {
@@ -93,7 +123,7 @@ export const ExportImportModal: React.FC<ExportImportModalProps> = ({ isOpen, on
       // Tenta parse JSON
       const json = JSON.parse(text);
 
-      // Caso 1: Backup nativo CubeLab (schemaVersion: 1)
+      // Caso 1: Backup nativo CubeLab (schemaVersion: 1 ou 2)
       if (json.app === 'CubeLab' && Array.isArray(json.solves)) {
         if (Array.isArray(json.sessions)) {
           for (const s of json.sessions as SessionRecord[]) {
@@ -102,6 +132,32 @@ export const ExportImportModal: React.FC<ExportImportModalProps> = ({ isOpen, on
         }
         if (json.settings) {
           await db.settings.put(json.settings as UserSettingsRecord);
+        }
+        if (json.profile) {
+          const p = json.profile;
+          let avatarBlob: Blob | undefined = undefined;
+          let bannerBlob: Blob | undefined = undefined;
+          if (p.avatarBase64) {
+            try {
+              avatarBlob = await ImageProcessor.base64ToBlob(p.avatarBase64);
+            } catch (e) {
+              console.warn('Erro ao converter Base64 para avatarBlob:', e);
+            }
+          }
+          if (p.bannerBase64) {
+            try {
+              bannerBlob = await ImageProcessor.base64ToBlob(p.bannerBase64);
+            } catch (e) {
+              console.warn('Erro ao converter Base64 para bannerBlob:', e);
+            }
+          }
+          const { avatarBase64, bannerBase64, ...restProfile } = p;
+          await db.profiles.put({
+            ...restProfile,
+            avatarBlob,
+            bannerBlob,
+          });
+          await useProfileStore.getState().loadProfile();
         }
         for (const solve of json.solves as SolveRecord[]) {
           await db.solves.put(solve);
