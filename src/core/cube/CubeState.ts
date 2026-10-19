@@ -10,6 +10,26 @@ export const DEFAULT_SOLVED_COLORS: Record<FaceLetter, CubeColor> = {
   D: 'yellow',
 };
 
+// Orientação de resolução oficial: Amarelo no topo (z2 a partir da orientação WCA do scramble)
+export const RESOLUTION_COLORS_GREEN_FRONT: Record<FaceLetter, CubeColor> = {
+  U: 'yellow',
+  D: 'white',
+  F: 'green',
+  B: 'blue',
+  R: 'orange',
+  L: 'red',
+};
+
+// Orientação alternativa: Amarelo no topo, Frente azul (x2 a partir de WCA)
+export const RESOLUTION_COLORS_BLUE_FRONT: Record<FaceLetter, CubeColor> = {
+  U: 'yellow',
+  D: 'white',
+  F: 'blue',
+  B: 'green',
+  R: 'red',
+  L: 'orange',
+};
+
 // Mapeamento exato de cada um dos 54 facelets para suas coordenadas 3D e vetor normal
 export const FACELET_COORDINATES: FaceletCoordinate[] = [];
 
@@ -151,16 +171,16 @@ export class CubeState {
     }
   }
 
-  public static createSolvedFacelets(): CubeFacelets {
+  public static createSolvedFacelets(customColors?: Record<FaceLetter, CubeColor>): CubeFacelets {
     const facelets: CubeColor[] = [];
     const faces: FaceLetter[] = ['U', 'L', 'F', 'R', 'B', 'D'];
     for (const face of faces) {
-      const color = DEFAULT_SOLVED_COLORS[face];
+      const color = (customColors && customColors[face]) || DEFAULT_SOLVED_COLORS[face];
       for (let i = 0; i < 9; i++) {
         facelets.push(color);
       }
     }
-    return facelets;
+    return facelets as CubeFacelets;
   }
 
   public clone(): CubeState {

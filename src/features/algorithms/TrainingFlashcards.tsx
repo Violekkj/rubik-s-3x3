@@ -137,9 +137,9 @@ export const TrainingFlashcards: React.FC<TrainingFlashcardsProps> = ({ cases, o
           <div className="bg-cube-surface1 rounded-2xl p-4 border border-cube-border/60">
             <AlgCaseNetView
               setupMove={setupMove}
-              stickerSize={20}
-              mode={currentCase.set === 'f2l' ? 'full' : 'll'}
-              highlightU
+              algSet={currentCase.set}
+              stickerSize={18}
+              className="w-28 h-28"
             />
           </div>
 
