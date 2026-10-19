@@ -11,7 +11,7 @@ describe('TimerStateMachine — Máquina de Estados e Regras Oficiais WCA', () =
     vi.useRealTimers();
   });
 
-  it('Modo Sem Inspeção: idle -> holding -> ready -> running -> stopped', () => {
+  it('Modo Sem Inspeção: idle -> holding -> ready -> running -> idle pós-stop', () => {
     let fakeTime = 1000;
     const getTime = () => fakeTime;
     const stateTransitions: string[] = [];
@@ -53,10 +53,10 @@ describe('TimerStateMachine — Máquina de Estados e Regras Oficiais WCA', () =
     vi.advanceTimersByTime(12345);
     timer.handlePrimaryDown(); // Para o timer
 
-    expect(timer.getState()).toBe('stopped');
+    expect(timer.getState()).toBe('idle');
     expect(stoppedResult.ms).toBe(12345);
     expect(stoppedResult.pen).toBe('none');
-    expect(stateTransitions).toEqual(['holding', 'ready', 'running', 'stopped']);
+    expect(stateTransitions).toEqual(['holding', 'ready', 'running', 'idle']);
   });
 
   it('Cancela início se soltar antes do limiar de segurar (holding threshold)', () => {
@@ -78,13 +78,24 @@ describe('TimerStateMachine — Máquina de Estados e Regras Oficiais WCA', () =
     expect(timer.getState()).toBe('idle');
   });
 
-  it('Modo Inspeção WCA: emite avisos aos 8s e 12s', () => {
+  it('Modo Inspeção WCA: bipes alinhados ao número exibido (8 em t=7000ms e 2 em t=13000ms)', () => {
     let fakeTime = 1000;
     const getTime = () => fakeTime;
     const warnings: number[] = [];
+    const ticks: Array<{ remaining: number; displayed: number; penalty: string }> = [];
+
     const timer = new TimerStateMachine(
-      { inspectionEnabled: true, holdingThresholdMs: 300 },
       {
+        inspectionEnabled: true,
+        inspectionDurationMs: 15000,
+        inspectionWarning1Sec: 8,
+        inspectionWarning2Sec: 2,
+        holdingThresholdMs: 300,
+      },
+      {
+        onInspectionTick: (remaining, displayed, penalty) => {
+          ticks.push({ remaining, displayed, penalty });
+        },
         onInspectionWarning: sec => warnings.push(sec),
       },
       getTime
@@ -95,29 +106,103 @@ describe('TimerStateMachine — Máquina de Estados e Regras Oficiais WCA', () =
     timer.handlePrimaryUp();
     expect(timer.getState()).toBe('inspecting');
 
-    // Avança 7.9s
-    fakeTime += 7900;
-    vi.advanceTimersByTime(7900);
+    // Em t=6900ms (faltam 8100ms, displayed = 9) -> nenhum bipe
+    fakeTime += 6900;
+    vi.advanceTimersByTime(6900);
     expect(warnings).toEqual([]);
 
-    // Avança para 8s
-    fakeTime += 200;
-    vi.advanceTimersByTime(200);
+    // Em t=7000ms (faltam 8000ms, displayed = 8) -> 1º bipe toca!
+    fakeTime += 100;
+    vi.advanceTimersByTime(100);
     expect(warnings).toEqual([8]);
 
-    // Avança para 12s
-    fakeTime += 4000;
-    vi.advanceTimersByTime(4000);
-    expect(warnings).toEqual([8, 12]);
+    // Em t=12900ms (faltam 2100ms, displayed = 3) -> ainda apenas [8]
+    fakeTime += 5900;
+    vi.advanceTimersByTime(5900);
+    expect(warnings).toEqual([8]);
+
+    // Em t=13000ms (faltam 2000ms, displayed = 2) -> 2º bipe toca!
+    fakeTime += 100;
+    vi.advanceTimersByTime(100);
+    expect(warnings).toEqual([8, 2]);
+
+    // Avança mais 500ms e garante que os bipes NÃO tocam de novo (disparo único)
+    fakeTime += 500;
+    vi.advanceTimersByTime(500);
+    expect(warnings).toEqual([8, 2]);
   });
 
-  it('Aplica penalidade +2 ao iniciar entre 15s e 17s de inspeção (Regra WCA A3c1)', () => {
+  it('Uma solve por vez: parar solve -> keyup -> avançar 30s continua idle sem reinício automático', () => {
     let fakeTime = 1000;
     const getTime = () => fakeTime;
-    let finalPenalty = 'none';
+    let stopCallCount = 0;
+    let inspectionCallCount = 0;
+
     const timer = new TimerStateMachine(
       { inspectionEnabled: true, holdingThresholdMs: 300 },
       {
+        onStop: () => {
+          stopCallCount++;
+        },
+        onInspectionTick: () => {
+          inspectionCallCount++;
+        },
+      },
+      getTime
+    );
+
+    // 1. Inicia inspeção
+    timer.handlePrimaryDown();
+    timer.handlePrimaryUp();
+    expect(timer.getState()).toBe('inspecting');
+
+    // 2. Segura 300ms e solta para iniciar solve
+    timer.handlePrimaryDown();
+    fakeTime += 300;
+    vi.advanceTimersByTime(300);
+    timer.handlePrimaryUp();
+    expect(timer.getState()).toBe('running');
+
+    // 3. Usuário para a solve pressionando espaço (keydown)
+    fakeTime += 8500;
+    vi.advanceTimersByTime(8500);
+    timer.handlePrimaryDown(); // Para o cronômetro
+    expect(timer.getState()).toBe('idle');
+    expect(stopCallCount).toBe(1);
+
+    // 4. Usuário solta a tecla de parada (keyup)
+    fakeTime += 50;
+    vi.advanceTimersByTime(50);
+    timer.handlePrimaryUp(); // Release do gesto de parada DESCARTADO!
+
+    // 5. Avança 30 segundos no tempo fictício
+    const previousInspectionTicks = inspectionCallCount;
+    fakeTime += 30000;
+    vi.advanceTimersByTime(30000);
+
+    // Continua idle! Nenhuma inspeção começou, nenhuma solve extra foi salva
+    expect(timer.getState()).toBe('idle');
+    expect(stopCallCount).toBe(1);
+    expect(inspectionCallCount).toBe(previousInspectionTicks);
+
+    // 6. Novo gesto explícito do usuário -> agora sim a inspeção inicia!
+    timer.handlePrimaryDown();
+    timer.handlePrimaryUp();
+    expect(timer.getState()).toBe('inspecting');
+  });
+
+  it('Aplica penalidade +2 ao chegar a 15s de inspeção (Regra WCA A3c1)', () => {
+    let fakeTime = 1000;
+    const getTime = () => fakeTime;
+    let lastTickPenalty = 'none';
+    let finalPenalty = 'none';
+
+    const timer = new TimerStateMachine(
+      { inspectionEnabled: true, holdingThresholdMs: 300 },
+      {
+        onInspectionTick: (_rem, _disp, pen) => {
+          lastTickPenalty = pen;
+        },
         onStop: (_ms, pen) => {
           finalPenalty = pen;
         },
@@ -128,35 +213,37 @@ describe('TimerStateMachine — Máquina de Estados e Regras Oficiais WCA', () =
     timer.handlePrimaryDown();
     timer.handlePrimaryUp(); // Começa inspeção no fakeTime = 1000
 
-    // Avança 15.5s (fakeTime = 16500)
-    fakeTime += 15500;
-    vi.advanceTimersByTime(15500);
+    // Avança 15.1s
+    fakeTime += 15100;
+    vi.advanceTimersByTime(15100);
+    expect(lastTickPenalty).toBe('plus2');
 
     // Segura para armar
     timer.handlePrimaryDown();
     fakeTime += 300;
-    vi.advanceTimersByTime(300); // Fica pronto
+    vi.advanceTimersByTime(300);
     expect(timer.getState()).toBe('ready');
 
-    // Solta no fakeTime = 16800 (15.8s de inspeção)
+    // Solta no fakeTime = 16400 (15.4s de inspeção)
     timer.handlePrimaryUp();
     expect(timer.getState()).toBe('running');
     expect(timer.getLastPenalty()).toBe('plus2');
 
-    fakeTime += 10000;
+    fakeTime += 5000;
     timer.handlePrimaryDown();
     expect(finalPenalty).toBe('plus2');
   });
 
-  it('Aplica penalidade DNF ao iniciar após 17s de inspeção (Regra WCA A3c2)', () => {
+  it('Aplica DNF automático aos 17s de inspeção (Regra WCA A3c2)', () => {
     let fakeTime = 1000;
     const getTime = () => fakeTime;
-    let finalPenalty = 'none';
+    let autoDnfCalledWith: number | null = null;
+
     const timer = new TimerStateMachine(
       { inspectionEnabled: true, holdingThresholdMs: 300 },
       {
-        onStop: (_ms, pen) => {
-          finalPenalty = pen;
+        onInspectionAutoDnf: ms => {
+          autoDnfCalledWith = ms;
         },
       },
       getTime
@@ -164,28 +251,24 @@ describe('TimerStateMachine — Máquina de Estados e Regras Oficiais WCA', () =
 
     timer.handlePrimaryDown();
     timer.handlePrimaryUp(); // Inicia inspeção
+    expect(timer.getState()).toBe('inspecting');
 
-    // Passam 17.5s
-    fakeTime += 17500;
-    vi.advanceTimersByTime(17500);
+    // Passam 16.9s -> ainda não é auto DNF
+    fakeTime += 16900;
+    vi.advanceTimersByTime(16900);
+    expect(autoDnfCalledWith).toBeNull();
 
-    timer.handlePrimaryDown();
-    fakeTime += 300;
-    vi.advanceTimersByTime(300);
-    timer.handlePrimaryUp(); // Inicia após 17.8s
-
-    expect(timer.getState()).toBe('running');
+    // Passam 17.0s -> DNF automático dispara e volta para idle!
+    fakeTime += 200;
+    vi.advanceTimersByTime(200);
+    expect(autoDnfCalledWith).toBe(17000);
+    expect(timer.getState()).toBe('idle');
     expect(timer.getLastPenalty()).toBe('dnf');
-
-    fakeTime += 10000;
-    timer.handlePrimaryDown();
-    expect(finalPenalty).toBe('dnf');
   });
 });
 
 describe('TimeFormatter — Formatação e Truncamento Oficial WCA (Artigo 9f1)', () => {
   it('trunca centésimos conforme convenção da WCA', () => {
-    // 12349 ms trunca para 12.34 (e não 12.35)
     const formatted = TimeFormatter.format(12349, 'none', 'hundredths');
     expect(formatted.display).toBe('12.34');
     expect(formatted.seconds).toBe(12);
@@ -193,11 +276,9 @@ describe('TimeFormatter — Formatação e Truncamento Oficial WCA (Artigo 9f1)'
   });
 
   it('formata minutos e horas corretamente', () => {
-    // 64.28s -> 1:04.28
     const minFormat = TimeFormatter.format(64280, 'none', 'hundredths');
     expect(minFormat.display).toBe('1:04.28');
 
-    // 3724.50s -> 1:02:04.50
     const hourFormat = TimeFormatter.format(3724500, 'none', 'hundredths');
     expect(hourFormat.display).toBe('1:02:04.50');
   });

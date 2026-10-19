@@ -14,7 +14,12 @@ const DEFAULT_SETTINGS: UserSettingsRecord = {
   inspectionEnabled: true,
   inspectionDurationMs: 15000,
   inspectionAudioAlerts: true,
-  inspectionVoiceAlerts: true,
+  inspectionWarning1Sec: 8,
+  inspectionWarning2Sec: 2,
+  beepVolume: 25,
+  timerSize: 'medium',
+  diagramFrontColor: 'green',
+  scrambleNetCollapsed: false,
   holdingThresholdMs: 300,
   timerPrecision: 'hundredths',
   hideTimerWhileRunning: false,
@@ -38,7 +43,9 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     try {
       const record = await db.settings.get('default');
       if (record) {
-        set({ settings: record, isLoading: false });
+        // Assegura campos novos mesclando com DEFAULT_SETTINGS
+        const merged: UserSettingsRecord = { ...DEFAULT_SETTINGS, ...record };
+        set({ settings: merged, isLoading: false });
       } else {
         await db.settings.put(DEFAULT_SETTINGS);
         set({ settings: DEFAULT_SETTINGS, isLoading: false });

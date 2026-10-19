@@ -57,25 +57,18 @@ export const CubeNetView: React.FC<CubeNetViewProps> = ({
     return DEFAULT_HEX_COLORS[c] || '#FFFFFF';
   };
 
-  // Dimensões do SVG:
-  // Cada sticker: 18x18 px, raio rx=3.5px
+  // Dimensões compactas do SVG:
+  // Cada sticker: 16x16 px, raio rx=3px
   // Gap entre stickers na mesma face: 2px
-  // Tamanho de uma face 3x3: 3*18 + 2*2 = 58px
-  // Gap entre faces: 6px
-  // Largura total (4 faces L-F-R-B): 4*58 + 3*6 = 250px
-  // Altura total (3 faces U-F-D): 3*58 + 2*6 = 186px
-  const STICKER_SIZE = 18;
+  // Tamanho de uma face 3x3: 3*16 + 2*2 = 52px
+  // Gap entre faces: 4px
+  // Largura total (4 faces L-F-R-B): 4*52 + 3*4 = 220px
+  // Altura total (3 faces U-F-D): 3*52 + 2*4 = 164px
+  const STICKER_SIZE = 16;
   const STICKER_GAP = 2;
-  const FACE_GAP = 6;
-  const FACE_SIZE = 3 * STICKER_SIZE + 2 * STICKER_GAP; // 58px
+  const FACE_GAP = 4;
+  const FACE_SIZE = 3 * STICKER_SIZE + 2 * STICKER_GAP; // 52px
 
-  // Posições das faces no plano (coluna 0..3, linha 0..2)
-  // U: col 1, linha 0
-  // L: col 0, linha 1
-  // F: col 1, linha 1
-  // R: col 2, linha 1
-  // B: col 3, linha 1
-  // D: col 1, linha 2
   const facePositions: Record<'U' | 'L' | 'F' | 'R' | 'B' | 'D', { x: number; y: number; startIdx: number }> = {
     U: { x: FACE_SIZE + FACE_GAP, y: 0, startIdx: 0 },
     L: { x: 0, y: FACE_SIZE + FACE_GAP, startIdx: 9 },
@@ -103,8 +96,8 @@ export const CubeNetView: React.FC<CubeNetViewProps> = ({
             y={sY}
             width={STICKER_SIZE}
             height={STICKER_SIZE}
-            rx={3.5}
-            ry={3.5}
+            rx={3}
+            ry={3}
             fill={getColorHex(color)}
           />
         );
@@ -114,33 +107,34 @@ export const CubeNetView: React.FC<CubeNetViewProps> = ({
     return rects;
   };
 
-  const svgWidth = 4 * FACE_SIZE + 3 * FACE_GAP; // 250px
-  const svgHeight = 3 * FACE_SIZE + 2 * FACE_GAP; // 186px
+  const svgWidth = 4 * FACE_SIZE + 3 * FACE_GAP; // 220px
+  const svgHeight = 3 * FACE_SIZE + 2 * FACE_GAP; // 164px
 
   return (
     <div
       id="scramble-preview-panel"
-      className="inline-flex flex-col items-center bg-cube-surface1/85 backdrop-blur-md border border-cube-border rounded-2xl px-5 py-3 shadow-xl select-none transition-all duration-300"
+      className="inline-flex flex-col items-center bg-cube-surface1/80 backdrop-blur-sm border border-cube-border/70 rounded-xl px-2.5 py-1 shadow-lg select-none transition-all duration-200"
     >
-      {/* Botão colapsável "Scramble ⌄" */}
+      {/* Botão colapsável compacto */}
       <button
         id="btn-toggle-scramble-net"
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="flex items-center gap-1.5 text-xs font-semibold text-cube-text hover:text-cube-cyan transition-colors py-1 px-3 rounded-lg hover:bg-cube-surface2/60"
-        title="Expandir ou recolher visualização do cubo"
+        className="flex items-center gap-1 text-[11px] font-semibold text-cube-textMuted hover:text-cube-cyan transition-colors py-0.5 px-2 rounded-md hover:bg-cube-surface2/50"
+        title={isCollapsed ? 'Expandir visualização do cubo' : 'Recolher visualização do cubo'}
       >
-        <span>Scramble</span>
-        {isCollapsed ? <ChevronDown className="w-3.5 h-3.5 text-cube-textMuted" /> : <ChevronUp className="w-3.5 h-3.5 text-cube-textMuted" />}
+        <span>Preview do Cubo</span>
+        {isCollapsed ? <ChevronDown className="w-3 h-3 text-cube-textDim" /> : <ChevronUp className="w-3 h-3 text-cube-textDim" />}
       </button>
 
       {/* SVG do Cubo Planificado */}
       {!isCollapsed && (
-        <div className="mt-2 flex items-center justify-center p-1 animate-fadeIn">
+        <div className="mt-1 flex items-center justify-center p-1 animate-fadeIn">
           <svg
             viewBox={`0 0 ${svgWidth} ${svgHeight}`}
             width={svgWidth}
             height={svgHeight}
-            className="overflow-visible drop-shadow-sm"
+            className="overflow-visible drop-shadow-sm max-w-[240px]"
+            aria-label="Cubo planificado em 2D"
           >
             {renderFaceStickers('U')}
             {renderFaceStickers('L')}

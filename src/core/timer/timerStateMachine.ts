@@ -2,8 +2,9 @@ import { PenaltyType, TimerConfig, TimerState } from './types';
 
 export interface TimerEventCallbacks {
   onStateChange?: (state: TimerState) => void;
-  onInspectionTick?: (remainingMs: number) => void;
-  onInspectionWarning?: (sec: 8 | 12) => void;
+  onInspectionTick?: (remainingMs: number, displayedSec: number, penalty: PenaltyType) => void;
+  onInspectionWarning?: (sec: number) => void;
+  onInspectionAutoDnf?: (inspectionMs: number) => void;
   onStop?: (elapsedMs: number, penalty: PenaltyType, inspectionMs?: number) => void;
 }
 
@@ -23,9 +24,13 @@ export class TimerStateMachine {
 
   private holdTimerId: ReturnType<typeof setTimeout> | null = null;
   private inspectionIntervalId: ReturnType<typeof setInterval> | null = null;
-  private hasWarned8s = false;
-  private hasWarned12s = false;
+  private warnedSeconds = new Set<number>();
   private getTime: () => number;
+
+  // Proteção contra reinício automático e descarte do gesto de parada
+  private stopLockoutUntil = 0;
+  private stoppingGesture = false;
+  private pendingInspectionStart = false;
 
   constructor(
     config: Partial<TimerConfig> = {},
@@ -35,6 +40,8 @@ export class TimerStateMachine {
     this.config = {
       inspectionEnabled: config.inspectionEnabled ?? true,
       inspectionDurationMs: config.inspectionDurationMs ?? 15000,
+      inspectionWarning1Sec: config.inspectionWarning1Sec ?? 8,
+      inspectionWarning2Sec: config.inspectionWarning2Sec ?? 2,
       holdingThresholdMs: config.holdingThresholdMs ?? 300,
       precision: config.precision ?? 'hundredths',
     };
@@ -58,6 +65,22 @@ export class TimerStateMachine {
     this.callbacks = { ...this.callbacks, ...callbacks };
   }
 
+  public getLastElapsedMs(): number {
+    return this.lastElapsedMs;
+  }
+
+  public getLastPenalty(): PenaltyType {
+    return this.lastPenalty;
+  }
+
+  public getInspectionMsUsed(): number {
+    return this.inspectionMsUsed;
+  }
+
+  public getHoldDuration(now = this.getTime()): number {
+    return this.holdStartTime > 0 ? Math.max(0, now - this.holdStartTime) : 0;
+  }
+
   private transitionTo(newState: TimerState): void {
     this.state = newState;
     this.callbacks.onStateChange?.(newState);
@@ -67,21 +90,21 @@ export class TimerStateMachine {
    * Pressionamento inicial do espaço ou início do toque (pointerdown / keydown)
    */
   public handlePrimaryDown(now = this.getTime()): void {
-    // Se o timer estiver rodando, parar imediatamente!
+    // Se o timer estiver rodando, parar imediatamente e ir para idle
     if (this.state === 'running') {
       this.stop(now);
       return;
     }
 
-    // Se estiver parado, pode preparar próxima tentativa
-    if (this.state === 'stopped') {
-      this.reset();
+    // Se estiver em lockout pós-parada, ignora qualquer novo down
+    if (now < this.stopLockoutUntil) {
+      return;
     }
 
     if (this.state === 'idle') {
       if (this.config.inspectionEnabled) {
-        // Se a inspeção estiver ligada, o primeiro clique apenas inicia a inspeção quando liberado
-        // Então ao apertar enquanto idle com inspeção, aguardamos soltar para iniciar a inspeção
+        // Marca intenção de iniciar inspeção ao soltar
+        this.pendingInspectionStart = true;
         return;
       } else {
         // Sem inspeção: segurar entra direto em 'holding'
@@ -97,9 +120,20 @@ export class TimerStateMachine {
    * Liberação do espaço ou do toque (pointerup / keyup)
    */
   public handlePrimaryUp(now = this.getTime()): void {
+    // Se este up pertence ao gesto que parou o cronômetro, descarta
+    if (this.stoppingGesture) {
+      this.stoppingGesture = false;
+      return;
+    }
+
+    // Se estiver em lockout pós-parada, ignora
+    if (now < this.stopLockoutUntil) {
+      return;
+    }
+
     if (this.state === 'idle') {
-      if (this.config.inspectionEnabled) {
-        // Soltou o primeiro clique -> inicia a inspeção oficial
+      if (this.config.inspectionEnabled && this.pendingInspectionStart) {
+        this.pendingInspectionStart = false;
         this.startInspection(now);
       }
       return;
@@ -125,29 +159,44 @@ export class TimerStateMachine {
 
   private startInspection(now: number): void {
     this.inspectionStartTime = now;
-    this.hasWarned8s = false;
-    this.hasWarned12s = false;
+    this.warnedSeconds.clear();
     this.transitionTo('inspecting');
 
     this.clearInspectionInterval();
     this.inspectionIntervalId = setInterval(() => {
       const elapsed = this.getTime() - this.inspectionStartTime;
-      const remaining = Math.max(0, this.config.inspectionDurationMs - elapsed);
 
-      this.callbacks.onInspectionTick?.(remaining);
+      if (elapsed < this.config.inspectionDurationMs) {
+        const remaining = Math.max(0, this.config.inspectionDurationMs - elapsed);
+        const displayedSec = Math.ceil(remaining / 1000);
 
-      // Alertas de 8 segundos (WCA A3b1)
-      if (elapsed >= 8000 && !this.hasWarned8s) {
-        this.hasWarned8s = true;
-        this.callbacks.onInspectionWarning?.(8);
+        this.callbacks.onInspectionTick?.(remaining, displayedSec, 'none');
+
+        // Dispara avisos baseados no número exibido (única fonte da verdade)
+        const w1 = this.config.inspectionWarning1Sec ?? 8;
+        const w2 = this.config.inspectionWarning2Sec ?? 2;
+
+        if (displayedSec === w1 && !this.warnedSeconds.has(w1)) {
+          this.warnedSeconds.add(w1);
+          this.callbacks.onInspectionWarning?.(w1);
+        }
+
+        if (displayedSec === w2 && !this.warnedSeconds.has(w2)) {
+          this.warnedSeconds.add(w2);
+          this.callbacks.onInspectionWarning?.(w2);
+        }
+      } else if (elapsed < this.config.inspectionDurationMs + 2000) {
+        // Entre 15s e 17s: exibe +2 em vermelho e armazena penalidade
+        this.callbacks.onInspectionTick?.(0, 0, 'plus2');
+      } else {
+        // >= 17s: DNF automático por inspeção expirada
+        this.clearInspectionInterval();
+        this.clearHoldTimer();
+        this.lastPenalty = 'dnf';
+        this.callbacks.onInspectionAutoDnf?.(17000);
+        this.transitionTo('idle');
       }
-
-      // Alertas de 12 segundos (WCA A3b2)
-      if (elapsed >= 12000 && !this.hasWarned12s) {
-        this.hasWarned12s = true;
-        this.callbacks.onInspectionWarning?.(12);
-      }
-    }, 50);
+    }, 25);
   }
 
   private startHolding(now: number): void {
@@ -173,10 +222,8 @@ export class TimerStateMachine {
     if (this.config.inspectionEnabled && this.inspectionStartTime > 0) {
       this.inspectionMsUsed = now - this.inspectionStartTime;
       if (this.inspectionMsUsed >= 17000) {
-        // >= 17s: DNF
         this.lastPenalty = 'dnf';
       } else if (this.inspectionMsUsed >= 15000) {
-        // 15s a 17s: +2 segundos
         this.lastPenalty = 'plus2';
       }
     } else {
@@ -192,7 +239,13 @@ export class TimerStateMachine {
     this.solveStopTime = now;
     this.lastElapsedMs = Math.max(0, this.solveStopTime - this.solveStartTime);
 
-    this.transitionTo('stopped');
+    // Ativa lockout e marca gesto de parada para ignorar o release subsequente
+    this.stopLockoutUntil = now + 300;
+    this.stoppingGesture = true;
+
+    // Ao parar o cronômetro: salvar UMA solve, exibir o tempo e ir para idle
+    this.transitionTo('idle');
+
     this.callbacks.onStop?.(
       this.lastElapsedMs,
       this.lastPenalty,
@@ -200,49 +253,42 @@ export class TimerStateMachine {
     );
   }
 
-  public reset(): void {
+  public cancel(): void {
     this.clearHoldTimer();
     this.clearInspectionInterval();
+    this.warnedSeconds.clear();
+    this.stoppingGesture = false;
+    this.pendingInspectionStart = false;
     this.inspectionStartTime = 0;
-    this.holdStartTime = 0;
-    this.solveStartTime = 0;
-    this.solveStopTime = 0;
-    this.hasWarned8s = false;
-    this.hasWarned12s = false;
     this.transitionTo('idle');
   }
 
-  public cancel(): void {
-    this.reset();
+  public reset(): void {
+    this.clearHoldTimer();
+    this.clearInspectionInterval();
+    this.warnedSeconds.clear();
+    this.stoppingGesture = false;
+    this.pendingInspectionStart = false;
+    this.inspectionStartTime = 0;
+    this.solveStartTime = 0;
+    this.solveStopTime = 0;
+    this.lastElapsedMs = 0;
+    this.lastPenalty = 'none';
+    this.inspectionMsUsed = 0;
+    this.transitionTo('idle');
   }
 
   private clearHoldTimer(): void {
-    if (this.holdTimerId) {
+    if (this.holdTimerId !== null) {
       clearTimeout(this.holdTimerId);
       this.holdTimerId = null;
     }
   }
 
   private clearInspectionInterval(): void {
-    if (this.inspectionIntervalId) {
+    if (this.inspectionIntervalId !== null) {
       clearInterval(this.inspectionIntervalId);
       this.inspectionIntervalId = null;
     }
-  }
-
-  public getLastElapsedMs(): number {
-    return this.lastElapsedMs;
-  }
-
-  public getLastPenalty(): PenaltyType {
-    return this.lastPenalty;
-  }
-
-  public getInspectionMsUsed(): number {
-    return this.inspectionMsUsed;
-  }
-
-  public getHoldDuration(now = this.getTime()): number {
-    return this.holdStartTime > 0 ? Math.max(0, now - this.holdStartTime) : 0;
   }
 }

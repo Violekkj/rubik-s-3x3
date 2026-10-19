@@ -35,6 +35,13 @@ interface SolveState {
   undoLastSolve: () => Promise<void>;
   clearPbAlert: () => void;
 
+  isTimerRunning: boolean;
+  setIsTimerRunning: (running: boolean) => void;
+
+  toast: { message: string; actionLabel?: string; onAction?: () => void } | null;
+  showToast: (message: string, actionLabel?: string, onAction?: () => void) => void;
+  clearToast: () => void;
+
   // Getters computados
   getCurrentSingle: () => SolveRecord | null;
   getCurrentAo5: () => number | null;
@@ -53,6 +60,16 @@ export const useSolveStore = create<SolveState>((set, get) => ({
   isLoading: true,
   lastSolve: null,
   newPbAlert: null,
+  isTimerRunning: false,
+  toast: null,
+
+  setIsTimerRunning: (running: boolean) => set({ isTimerRunning: running }),
+
+  showToast: (message: string, actionLabel?: string, onAction?: () => void) => {
+    set({ toast: { message, actionLabel, onAction } });
+  },
+
+  clearToast: () => set({ toast: null }),
 
   loadSolvesForSession: async (sessionId: string) => {
     set({ isLoading: true });
