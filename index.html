@@ -15,9 +15,87 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Estilo Crítico Inicial (Evita tela branca ao abrir) -->
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #030F1A;
+        color: #F1F5F9;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        min-height: 100vh;
+      }
+    </style>
   </head>
   <body class="bg-cube-bg text-cube-text antialiased select-none">
     <div id="root"></div>
+
+    <!-- Script de detecção para abertura via file:/// no Windows -->
+    <script>
+      (function() {
+        if (window.location.protocol === 'file:') {
+          var serverUrl = 'http://127.0.0.1:5173/';
+          
+          // Testa se o servidor local do CubeLab já está ativo
+          fetch(serverUrl, { mode: 'no-cors' })
+            .then(function() {
+              window.location.replace(serverUrl);
+            })
+            .catch(function() {
+              // Exibe instrução amigável de 1 clique caso o servidor ainda não esteja rodando
+              document.addEventListener('DOMContentLoaded', function() {
+                var root = document.getElementById('root');
+                if (!root) return;
+                root.innerHTML = `
+                  <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; background: radial-gradient(circle at 50% 25%, #0a2540 0%, #030F1A 85%);">
+                    <div style="max-width: 520px; width: 100%; background: #07192C; border: 1px solid #143555; border-radius: 24px; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8); text-align: center;">
+                      <div style="width: 60px; height: 60px; margin: 0 auto 16px; background: linear-gradient(135deg, #0891b2, #00E5FF); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 0 25px rgba(0, 229, 255, 0.45);">
+                        🧊
+                      </div>
+                      <h1 style="margin: 0 0 6px; font-size: 26px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.5px;">CubeLab 3x3</h1>
+                      <p style="margin: 0 0 24px; font-size: 13px; color: #94A3B8; line-height: 1.5;">
+                        Você abriu o arquivo via <code style="background: #0D2845; padding: 2px 6px; border-radius: 6px; color: #00E5FF; font-family: monospace;">file:///</code>. Como o CubeLab é um PWA completo (com banco de dados IndexedDB e Web Workers), os navegadores modernos exigem que ele seja executado através de um servidor local.
+                      </p>
+
+                      <div style="background: #092038; border: 1px solid #1E4976; border-radius: 16px; padding: 20px; margin-bottom: 20px; text-align: left;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                          <span style="background: #00E5FF; color: #030F1A; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 999px;">OPÇÃO 1 — RECOMENDADA</span>
+                          <strong style="color: #F8FAFC; font-size: 14px;">1 Clique no Windows</strong>
+                        </div>
+                        <p style="margin: 0 0 10px; font-size: 13px; color: #CBD5E1; line-height: 1.5;">
+                          Dê <strong>2 cliques</strong> no arquivo <strong style="color: #00E5FF;">Abrir-CubeLab.bat</strong> na pasta do projeto. Ele inicia o servidor e abre o app automaticamente!
+                        </p>
+                        <div style="background: #04101D; border-radius: 8px; padding: 10px 14px; font-family: monospace; font-size: 12px; color: #38BDF8;">
+                          📁 rubik's 3x3 / ⚡ <strong>Abrir-CubeLab.bat</strong>
+                        </div>
+                      </div>
+
+                      <div style="background: #092038; border: 1px solid #1E4976; border-radius: 16px; padding: 20px; margin-bottom: 24px; text-align: left;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                          <span style="background: #64748B; color: #FFFFFF; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 999px;">OPÇÃO 2</span>
+                          <strong style="color: #F8FAFC; font-size: 14px;">Via Terminal</strong>
+                        </div>
+                        <p style="margin: 0 0 10px; font-size: 13px; color: #CBD5E1; line-height: 1.5;">
+                          Execute o comando abaixo na pasta do projeto:
+                        </p>
+                        <div style="background: #04101D; border-radius: 8px; padding: 10px 14px; font-family: monospace; font-size: 13px; color: #00E5FF;">
+                          npm run dev
+                        </div>
+                      </div>
+
+                      <button onclick="window.location.href='http://127.0.0.1:5173/'" style="width: 100%; background: linear-gradient(135deg, #06b6d4, #00E5FF); border: none; border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; color: #030F1A; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 14px rgba(0, 229, 255, 0.45);">
+                        Acessar http://127.0.0.1:5173/
+                      </button>
+                    </div>
+                  </div>
+                `;
+              });
+            });
+        }
+      })();
+    </script>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
